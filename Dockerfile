@@ -27,3 +27,8 @@ RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
     && php /tmp/composer-setup.php --no-ansi --install-dir=/usr/local/bin --filename=composer \
     && rm /tmp/composer-setup.php
 
+# Disable host key checking from within builds as we cannot interactively accept them
+# TODO: It might be a better idea to bake ~/.ssh/known_hosts into the container
+RUN mkdir -p ~/.ssh
+RUN printf "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+
