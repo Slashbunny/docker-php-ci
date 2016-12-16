@@ -5,7 +5,9 @@ RUN apt-get update -y && apt-get install -y \
     ant \
     curl \
     git \
+    libc-client-dev \
     libcurl4-gnutls-dev \
+    libkrb5-dev \
     libxslt1-dev \
     libxslt1.1 \
     openssh-client \
@@ -14,11 +16,14 @@ RUN apt-get update -y && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Install PHP Modules
-RUN docker-php-ext-install \
-    curl \
-    json \
-    xsl \
-    zip
+RUN docker-php-ext-configure imap --with-kerberos --with-imap-ssl && \
+    docker-php-ext-install \
+        bcmath \
+        curl \
+        imap \
+        json \
+        xsl \
+        zip
 
 # Install Composer
 RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
