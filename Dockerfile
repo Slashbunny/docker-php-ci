@@ -7,6 +7,7 @@ RUN apt-get update -y && apt-get install -y \
     git \
     libc-client-dev \
     libcurl4-gnutls-dev \
+    libfreetype6-dev \
     libkrb5-dev \
     libxslt1-dev \
     libxslt1.1 \
@@ -17,9 +18,10 @@ RUN apt-get update -y && apt-get install -y \
 
 # Install PHP Modules
 RUN docker-php-ext-configure imap --with-kerberos --with-imap-ssl && \
-    docker-php-ext-install \
+    docker-php-ext-install -j$(nproc) \
         bcmath \
         curl \
+        gd \
         imap \
         json \
         xsl \
